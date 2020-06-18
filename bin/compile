@@ -16,7 +16,7 @@ for BUILDPACK in $(cat $1/.buildpacks); do
   fi
 
   if [ "$url" != "" ]; then
-    echo "=====> Downloading Buildpack: $url"
+    echo "=====> Downloading Buildpack: $url, $(date -u +"%T")"
 
     if [[ "$url" =~ \.tgz$ ]] || [[ "$url" =~ \.tgz\? ]]; then
       mkdir -p "$dir"
@@ -36,8 +36,10 @@ for BUILDPACK in $(cat $1/.buildpacks); do
     framework=$($dir/bin/detect $1)
 
     if [ $? == 0 ]; then
-      echo "=====> Detected Framework: $framework"
+      echo "=====> Detected Framework: $framework, $(date -u +"%T")"
       $dir/bin/compile $1 $2 $3
+
+      echo "=====> Finished compile: $framework $(date -u +"%T")"
 
       if [ $? != 0 ]; then
         exit 1
